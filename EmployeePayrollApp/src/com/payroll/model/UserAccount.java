@@ -1,21 +1,23 @@
 package com.payroll.model;
 
+import com.payroll.util.PasswordUtil;
+
 public class UserAccount {
 
     private String username;
-    private String password;
+    private String passwordHash;
 
     public UserAccount(String username, String password) {
+
         this.username = username;
-        this.password = password;
+        this.passwordHash = PasswordUtil.hash(password);
     }
-    
-    //getters and setters
+
     public String getUsername() {
         return username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 }
