@@ -2,6 +2,7 @@ package com.payroll.app;
 
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 import com.payroll.exception.ValidationException;
 import com.payroll.model.Employee;
@@ -14,10 +15,15 @@ import com.payroll.model.Payslip;
 import com.payroll.util.DownloadToken;
 import com.payroll.service.FileService;
 import com.payroll.model.SalaryComponents;
+import com.payroll.dashboard.Dashboard;
+import com.payroll.dashboard.DashboardFactory;
 
 public class EmployeeApp {
+	static ArrayList<Payslip>allPayslips = new ArrayList<>();
 
     public static void main(String[] args) {
+    	
+    	
 
         Scanner sc = new Scanner(System.in);
         int choice;
@@ -29,7 +35,8 @@ public class EmployeeApp {
         System.out.println("2. Employee Login");
         System.out.println("3. Generate Payslip");
         System.out.println("4. Download Payslip");
-        System.out.println("5. Exit");
+        System.out.println("5. Dashboard Display");
+        System.out.println("6. Exit");
 
         System.out.print("Enter your choice: ");
         choice = sc.nextInt();
@@ -142,6 +149,8 @@ public class EmployeeApp {
         	Payslip payslip = service.generatePayslip(emp, month, basic, hra, da, allowances);
 
         	System.out.println(payslip);
+        	
+        	allPayslips.add(payslip);
 
         	break;
         	
@@ -151,9 +160,14 @@ public class EmployeeApp {
             
             Employee emp1 = new Employee("EMP-1010","John David","","",null);
             
+            
             SalaryComponents comp = new SalaryComponents(40000,5000,3000,500);
+            if(allPayslips.isEmpty()) {
+            	System.out.println("No Payslips Generated yet");
+            	break;
+            }
             Payslip original =
-                    new Payslip(emp1,comp,"January 2026");
+                    allPayslips.get(allPayslips.size()-1);
 
             System.out.println("\nOriginal Payslip:");
             System.out.println(original);
@@ -189,8 +203,31 @@ public class EmployeeApp {
             }
 
         break;
-            
+        
         case 5:
+
+            System.out.println("\n=== USE CASE 5 : DASHBOARD DISPLAY ===");
+            
+            Employee emp2 = new Employee("EMP-0001","Akshat","","",null);
+            
+            SalaryComponents comp1 = new SalaryComponents(30000,5000,2000,1000);
+
+            if(allPayslips.isEmpty()) {
+            	System.out.println("No Payslips Generated yet");
+            	break;
+            }
+           
+
+            System.out.print("Enter Role (EMPLOYEE / MANAGER) : ");
+            String role = sc.next();
+
+            Dashboard dashboard = DashboardFactory.getDashboard(role);
+
+            dashboard.display(allPayslips, emp2);
+
+            break;
+            
+        case 6:
         	System.out.println("Exiting....");
         	sc.close();
         	System.exit(0);
