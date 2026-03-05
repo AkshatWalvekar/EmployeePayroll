@@ -18,6 +18,7 @@ import com.payroll.model.SalaryComponents;
 import com.payroll.dashboard.Dashboard;
 import com.payroll.dashboard.DashboardFactory;
 
+
 public class EmployeeApp {
 	static ArrayList<Payslip>allPayslips = new ArrayList<>();
 
@@ -36,7 +37,8 @@ public class EmployeeApp {
         System.out.println("3. Generate Payslip");
         System.out.println("4. Download Payslip");
         System.out.println("5. Dashboard Display");
-        System.out.println("6. Exit");
+        System.out.println("6. Input Validation");
+        System.out.println("7. Exit");
 
         System.out.print("Enter your choice: ");
         choice = sc.nextInt();
@@ -53,7 +55,7 @@ public class EmployeeApp {
 
                 System.out.print("Enter Employee ID (EMP-XXXX): ");
                 String empId = sc.nextLine();
-                Validator.validateEmpId(empId);
+                Validator.validateEmployeeId(empId);
 
                 System.out.print("Enter Name: ");
                 String name = sc.nextLine();
@@ -228,6 +230,40 @@ public class EmployeeApp {
             break;
             
         case 6:
+
+            System.out.println("\n=== USE CASE 6 : INPUT VALIDATION ===");
+
+            try {
+
+                System.out.print("Enter Employee ID (EMP-XXXX): ");
+                String empId = sc.nextLine();
+                Validator.validateEmployeeId(empId);
+
+                System.out.print("Enter Email: ");
+                String email = sc.nextLine();
+                Validator.validateEmail(email);
+
+                System.out.print("Enter Phone Number: ");
+                String phone = sc.nextLine();
+                Validator.validatePhone(phone);
+
+                System.out.print("Create Password: ");
+                String password = sc.nextLine();
+                Validator.validatePassword(password);
+
+                System.out.println("\nAll inputs are VALID. Registration/Login can proceed.");
+
+            }
+            catch (ValidationException ex) {
+
+                System.out.println("\nValidation Failed:");
+                System.out.println(ex.getMessage());
+
+            }
+
+            break;
+            
+        case 7:
         	System.out.println("Exiting....");
         	sc.close();
         	System.exit(0);
