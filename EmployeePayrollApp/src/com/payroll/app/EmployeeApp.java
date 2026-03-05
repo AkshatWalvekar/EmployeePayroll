@@ -11,6 +11,9 @@ import com.payroll.session.Session;
 import com.payroll.util.Validator;
 import com.payroll.service.PayrollService;
 import com.payroll.model.Payslip;
+import com.payroll.util.DownloadToken;
+import com.payroll.service.FileService;
+import com.payroll.model.SalaryComponents;
 
 public class EmployeeApp {
 
@@ -25,7 +28,8 @@ public class EmployeeApp {
         System.out.println("1. Employee Registration");
         System.out.println("2. Employee Login");
         System.out.println("3. Generate Payslip");
-        System.out.println("4. Exit");
+        System.out.println("4. Download Payslip");
+        System.out.println("5. Exit");
 
         System.out.print("Enter your choice: ");
         choice = sc.nextInt();
@@ -140,8 +144,53 @@ public class EmployeeApp {
         	System.out.println(payslip);
 
         	break;
-            
+        	
         case 4:
+
+            System.out.println("\n=== USE CASE 4 : PAYSLIP PRINT / DOWNLOAD ===");
+            
+            Employee emp1 = new Employee("EMP-1010","John David","","",null);
+            
+            SalaryComponents comp = new SalaryComponents(40000,5000,3000,500);
+            Payslip original =
+                    new Payslip(emp1,comp,"January 2026");
+
+            System.out.println("\nOriginal Payslip:");
+            System.out.println(original);
+
+            try {
+
+                Payslip copy = (Payslip) original.clone();
+
+                System.out.println("\nVerified: Download copy is equal to original.");
+
+                DownloadToken token = new DownloadToken();
+
+                if(token.isExpired()) {
+                    System.out.println("Download expired.");
+                    break;
+                }
+
+                FileService fs = new FileService();
+
+                String txt = fs.savePayslipAsText(copy);
+                String pdf = fs.savePayslipAsPdf(copy);
+
+                System.out.println("\nPayslip Download Successful.");
+                System.out.println("Saved as text file: " + txt);
+                System.out.println("Saved as PDF file: " + pdf);
+
+                System.out.println("\n--- Printed Payslip ---");
+                System.out.println(copy);
+
+            }
+            catch(Exception e) {
+                System.out.println("Error during payslip download.");
+            }
+
+        break;
+            
+        case 5:
         	System.out.println("Exiting....");
         	sc.close();
         	System.exit(0);

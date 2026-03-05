@@ -1,6 +1,6 @@
 package com.payroll.model;
 
-public class Payslip {
+public final class Payslip implements Cloneable{
 
     private Employee employee;              // Aggregation
     private SalaryComponents components;    // Composition
@@ -10,6 +10,18 @@ public class Payslip {
         this.employee = employee;
         this.components = components;
         this.month = month;
+    }
+    
+    public Employee getEmployee() {
+    	return employee;
+    }
+    
+    public SalaryComponents getComponents() {
+    	return components;
+    }
+    
+    public String getMonth() {
+    	return month;
     }
 
     @Override
@@ -33,4 +45,19 @@ public class Payslip {
                 + "Net Pay      : " + components.netPay + "\n"
                 + "==============================\n";
     }
+    
+    @Override
+    public Object clone() {
+    	
+    	SalaryComponents compCopy = new SalaryComponents(components.basicSalary,components.hra,components.da,components.allowances);
+    	
+    	return new Payslip(employee,compCopy,month);
+    }
 }
+
+
+
+
+
+
+
