@@ -21,6 +21,14 @@ public class Employee {
         this.phone = phone;
         this.account = account;
     }
+    
+    public String getName() {
+    	return name;
+    }
+    
+    public String getEmpId() {
+    	return empId;
+    }
 
     @Override
     public String toString() {

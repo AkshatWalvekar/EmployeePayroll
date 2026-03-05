@@ -9,6 +9,8 @@ import com.payroll.model.UserAccount;
 import com.payroll.service.AuthenticationService;
 import com.payroll.session.Session;
 import com.payroll.util.Validator;
+import com.payroll.service.PayrollService;
+import com.payroll.model.Payslip;
 
 public class EmployeeApp {
 
@@ -22,7 +24,8 @@ public class EmployeeApp {
         System.out.println("===== EMPLOYEE PAYROLL SYSTEM =====");
         System.out.println("1. Employee Registration");
         System.out.println("2. Employee Login");
-        System.out.println("3. Exit");
+        System.out.println("3. Generate Payslip");
+        System.out.println("4. Exit");
 
         System.out.print("Enter your choice: ");
         choice = sc.nextInt();
@@ -103,6 +106,42 @@ public class EmployeeApp {
             break;
             
         case 3:
+
+        	System.out.println("\n=== USE CASE 3 : PAYSLIP GENERATION ===");
+
+        	System.out.print("Enter Employee ID: ");
+        	String id = sc.nextLine();
+
+        	System.out.print("Enter Employee Name: ");
+        	String name = sc.nextLine();
+
+        	System.out.print("Enter Month: ");
+        	String month = sc.nextLine();
+
+        	System.out.print("Enter Basic Salary: ");
+        	double basic = sc.nextDouble();
+
+        	System.out.print("Enter HRA: ");
+        	double hra = sc.nextDouble();
+
+        	System.out.print("Enter DA: ");
+        	double da = sc.nextDouble();
+
+        	System.out.print("Enter Allowances: ");
+        	double allowances = sc.nextDouble();
+        	sc.nextLine();
+
+        	Employee emp = new Employee(id, name, "", "", null);
+
+        	PayrollService service = new PayrollService();
+
+        	Payslip payslip = service.generatePayslip(emp, month, basic, hra, da, allowances);
+
+        	System.out.println(payslip);
+
+        	break;
+            
+        case 4:
         	System.out.println("Exiting....");
         	sc.close();
         	System.exit(0);
